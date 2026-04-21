@@ -1,73 +1,36 @@
-# Spotify Mixer - Generador de Playlists Inteligente
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Una aplicación web interactiva construida con **Next.js** y **Tailwind CSS** que permite generar playlists de Spotify personalizadas basándose en estados de ánimo, décadas, popularidad y gustos musicales específicos.
+## Getting Started
 
-![Pagina Principal](spotify-taste-mixer/public/screenshot1.png)
-![Favoritos](spotify-taste-mixer/public/screenshot2.png)
-![Playlist guardadas](spotify-taste-mixer/public/screenshot3.png)
+First, run the development server:
 
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Características Principales
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Mixer & Widgets
-Un panel de control completo para filtrar música:
-* **Artistas y Géneros:** Selección múltiple para definir la base de la búsqueda.
-* **Mood Widget:** Algoritmo personalizado que traduce parámetros de audio (Energía, Positividad, Bailabilidad) en géneros musicales compatibles (ej: *Energía Alta* -> *Rock/EDM*).
-* **Widget de Popularidad:** Filtra desde música *Underground* hasta el *Top 50 Mundial*.
-* **Filtro por Décadas:** Viaja en el tiempo seleccionando épocas específicas (80s, 90s, 00s...).
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-### Gestión de Playlists (Local)
-* **Generación Inteligente:** Algoritmo que mezcla resultados de diferentes fuentes (artistas, géneros y mood) para crear una lista variada.
-* **Mis Playlists:** Sistema de guardado persistente utilizando `localStorage`. Crea, nombra y gestiona tus listas favoritas sin necesidad de base de datos.
-* **Favoritos:** Marca canciones individuales para guardarlas en tu biblioteca personal.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### UI/UX Moderna
-* Diseño **Responsive** y oscuro (Dark Mode nativo).
-* Barras de desplazamiento personalizadas (estilo Spotify).
-* Interfaz flexible con **Sticky Headers** y áreas de scroll independiente.
+## Learn More
 
-## Stack Tecnológico
+To learn more about Next.js, take a look at the following resources:
 
-* **Framework:** [Next.js 14/15](https://nextjs.org/) (App Router)
-* **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
-* **Estado:** React Hooks (`useState`, `useEffect`, `localStorage`).
-* **Iconos:** Emojis nativos y CSS puro.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Cómo funciona el algoritmo de Mood
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Dado que la API de búsqueda estándar no permite filtrar por "audio features" (energía, valencia) directamente, la aplicación utiliza una **lógica de mapeo inteligente**:
+## Deploy on Vercel
 
-1.  El usuario ajusta los sliders (0-100%).
-2.  El sistema traduce estos valores a "Géneros Fantasma".
-    * *Ejemplo:* Si `Energía > 80%`, se añade internamente `rock` y `edm` a la búsqueda.
-    * *Ejemplo:* Si `Positividad < 20%`, se añade `sad` y `piano`.
-3.  Se combinan estos resultados con los artistas seleccionados para garantizar que la playlist final coincida con la "vibe" del usuario.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Estructura del Proyecto
-
-```text
-src/
-├── app/
-│   ├── api/
-│   │   ├── refresh-token/   # Endpoint para renovar sesión
-│   │   └── spotify-token/   # Endpoint para obtener token inicial
-│   ├── auth/callback/       # Redirección tras login de Spotify
-│   ├── dashboard/           # Página principal (El Mixer)
-│   ├── globals.css          # Estilos globales y custom scrollbar
-│   └── layout.js            # Layout raíz
-├── components/
-│   ├── widgets/             # Componentes de filtrado aislados
-│   │   ├── ArtistWidget.jsx
-│   │   ├── DecadeWidget.jsx
-│   │   ├── GenreWidget.jsx
-│   │   ├── MoodWidget.jsx
-│   │   ├── PopularityWidget.jsx
-│   │   └── TrackWidget.jsx
-│   ├── Favorites.jsx        # Vista de canciones favoritas
-│   ├── Header.jsx           # Navegación superior
-│   ├── MyPlaylists.jsx      # Vista de listas guardadas (LocalStorage)
-│   ├── PlaylistDisplay.jsx  # Componente visualizador de resultados
-│   └── TrackModal.jsx       # Modal de detalles de canción
-└── lib/
-    ├── auth.js              # Lógica de gestión de tokens y sesiones
-    └── spotify.js           # Motor de búsqueda y algoritmo de generación
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
