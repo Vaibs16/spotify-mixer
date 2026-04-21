@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Spotify Mixer
 
-## Getting Started
+An interactive web app built with Next.js and Tailwind CSS that generates personalized Spotify playlists based on mood, decade, popularity and specific musical taste.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-14/15-black)
+![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38BDF8)
+![Spotify](https://img.shields.io/badge/Spotify-API-1DB954)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Screenshots
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Mixer](public/screenshot1.png)
+![Favourites](public/screenshot2.png)
+![Playlists](public/screenshot3.png)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Mixer & Widgets**, a full control panel to filter music:
+- Artist and genre multi-selection
+- Mood Widget: custom algorithm that maps audio parameters (Energy, Positivity, Danceability) to compatible genres
+- Popularity filter: from underground music to the Global Top 50
+- Decade filter: 50s through 20s
 
-## Learn More
+**Playlist Management:**
+- Smart generation algorithm that mixes results from different sources (artists, genres, mood) to create a varied list
+- Save and manage playlists persistently via `localStorage`
+- Mark individual songs as favourites
 
-To learn more about Next.js, take a look at the following resources:
+**UI/UX:**
+- Native dark mode, responsive design
+- Custom scrollbars (Spotify-style)
+- Sticky headers and independent scroll areas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How the Mood Algorithm Works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The standard Spotify search API does not support filtering by audio features (energy, valence) directly. The app uses a custom mapping approach:
 
-## Deploy on Vercel
+1. The user adjusts sliders (0–100%)
+2. The system translates values into internal "Ghost Genres"
+   - `Energy > 80%` → adds `rock` and `edm` to the search
+   - `Positivity < 20%` → adds `sad` and `piano`
+3. These results are combined with selected artists to match the user's intended vibe
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** Next.js 14/15 (App Router)
+- **Styles:** Tailwind CSS
+- **State:** React Hooks (`useState`, `useEffect`, `localStorage`)
+- **Auth:** Spotify OAuth 2.0 with token refresh
+
+## Project Structure
+
+    src/
+    ├── app/
+    │   ├── api/
+    │   │   ├── refresh-token/   # Token renewal endpoint
+    │   │   └── spotify-token/   # Initial token endpoint
+    │   ├── auth/callback/       # Spotify login redirect
+    │   ├── dashboard/           # Main page (The Mixer)
+    │   ├── globals.css          # Global styles and custom scrollbar
+    │   └── layout.js            # Root layout
+    ├── components/
+    │   ├── widgets/
+    │   │   ├── ArtistWidget.jsx
+    │   │   ├── DecadeWidget.jsx
+    │   │   ├── GenreWidget.jsx
+    │   │   ├── MoodWidget.jsx
+    │   │   ├── PopularityWidget.jsx
+    │   │   └── TrackWidget.jsx
+    │   ├── Favorites.jsx
+    │   ├── Header.jsx
+    │   ├── MyPlaylists.jsx
+    │   ├── PlaylistDisplay.jsx
+    │   └── TrackModal.jsx
+    └── lib/
+        ├── auth.js              # Token and session management
+        └── spotify.js           # Search engine and generation algorithm
+
+## How to Run
+
+1. Clone the repo and install dependencies:
+
+        npm install
+
+2. Create a `.env.local` file with your Spotify credentials:
+
+        SPOTIFY_CLIENT_ID=your_client_id
+        SPOTIFY_CLIENT_SECRET=your_client_secret
+        NEXTAUTH_URL=http://localhost:3000
+
+3. Run the development server:
+
+        npm run dev
